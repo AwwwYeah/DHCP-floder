@@ -244,7 +244,7 @@ void InitSettings(struct user_opt *u_opt, u_int s_ip, u_char *s_mac)
 
 void help(void)
 {
-	printf("\n*****DHCP flooder by Valentine4567******\n\n");
+	printf("\n*****DHCP flooder by untitled543******\n\n");
 	
 	printf("General settings\n");
 	printf("-i             - Interface\n");
@@ -254,7 +254,10 @@ void help(void)
 
 	printf("Flood settings:\n");
 	printf("-t(--time-out)         - Time out between messages\n");
-	printf("-c                     - Amount of packets that will be sent in (--time-out) interval\n\n");
+	printf("-c                     - Amount of packets that will be sent in (--time-out) interval\n");
+	printf("--relay-ip             - Relay agent IP address\n");
+	printf("--relay-mac            - Relay MAC address\n");
+	printf("Using: ./dhcpkiller -m flood --relay-ip 192.168.100.2 --relay-mac a1:b2:c3:d4:e5:f6\n\n");
 	
 	printf("Starvation settings:\n");
 	printf("-lt (--lease-time)     - Address lease time(seconds)\n");
@@ -263,13 +266,8 @@ void help(void)
 	printf("--relay-ip             - Relay agent IP address\n");
 	printf("--relay-mac            - Relay agent MAC address\n");
 	printf("After using of this mode you can free reserved addresses, just run \"free mode\"\n");
-	printf("Options \"--relay-ip\" and \"--relay-mac\" must be set as your address\n\n");
-
-	printf("Flood:\n");
-	printf("./dhcpkiller -i wlan0 -m flood\n\n");
-
-	printf("Starvation:\n");
-	printf("./dhcpkiller -m starvation --relay-mac 58:a1:ff:66:85:51 --relay-ip 192.168.0.2 -lt 1200\n\n");
+	printf("Options \"--relay-ip\" and \"--relay-mac\" must be set as your address\n");
+	printf("Using: ./dhcpkiller -m starvation --relay-mac 58:a1:ff:66:85:51 --relay-ip 192.168.0.2 -lt 1200\n\n");
 
 	printf("Free addresses:\n");
 	printf("./dhcpkiller -m free\n");
@@ -284,14 +282,15 @@ void ShowDefSet(void)
 	printf("Flood settings:\n");
 	printf("Time-out:   		1 seconds\n");
 	printf("Packets amount:     10 packets in (time-out)\n");	
-	printf("Sender MAC address: randomized\n\n");
+	printf("Relay agent MAC:    must be set by option\n");
+	printf("Relay agent IP:     must be set by option\n\n");
 
     printf("Starvation settings:\n");
 	printf("Lease time:     60 seconds\n");
 	printf("Renewal time:   30 seconds\n");
 	printf("Rebinding time: 54 seconds\n\n");
-	printf("Relay agent IP address:  must be set with an option\n");
-	printf("Relay agent MAC address: must be set with an option\n");
+	printf("Relay agent IP address:  must be set by option\n");
+	printf("Relay agent MAC address: must be set by option\n");
 
 	return;
 }

